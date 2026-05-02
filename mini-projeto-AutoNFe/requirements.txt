@@ -1,0 +1,11 @@
+# Dependências do AutoNFe
+# Versões fixas (sem ^ ou ~) para evitar supply chain attacks
+
+# Leitura e validação de XML com suporte a XSD
+lxml==5.3.0
+
+# Dashboard web
+Flask==3.1.0
+
+# Leitura de variáveis de ambiente a partir do arquivo .env
+python-dotenv==1.0.1
