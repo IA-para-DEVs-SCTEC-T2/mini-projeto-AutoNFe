@@ -95,12 +95,42 @@ Fluxo de aprovação dos registros criados automaticamente pelo **Agente 2**:
 
 ---
 
+## Autenticação e Usuários
+- Tela de login com autenticação por e-mail ou nome de usuário
+- Senhas criptografadas com bcrypt (Werkzeug)
+- Requisitos de senha: mínimo 8 caracteres, maiúscula, minúscula, número e caractere especial
+- Primeiro login força troca de senha
+- Recuperação de senha via senha temporária (simulada no log; configure SMTP para envio real)
+- Troca de senha com validação da senha temporária
+- Cadastro de usuários (somente administrador): Nome, E-mail, Senha, Tipo (Padrão/Administrador)
+- Usuário administrador inicial: `admin@autonfe.local` / senha `sa`
+- Controle de acesso por sessão Flask + token de API
+
+---
+
+## Segurança (OWASP Top 10)
+- Autenticação obrigatória em todas as rotas (sessão + token API)
+- Senhas com hash bcrypt — nunca armazenadas em texto claro
+- Parser XML com `resolve_entities=False, no_network=True` (anti-XXE)
+- Headers HTTP: CSP, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection
+- Sanitização de nomes de arquivo (anti-XSS e path traversal)
+- Limite de 50 arquivos por lote (anti-DoS)
+- `debug=False` por padrão; `SECRET_KEY` via variável de ambiente
+- Logging de auditoria: importações, autorizações e acessos negados
+
+---
+
 ## Tecnologias
 
 - **Python 3.11+** — runtime principal
 - **lxml** — leitura e validação de XML com suporte a XSD
 - **SQLite** — banco de dados local
 - **XML Schema (XSD)** — `leiauteNFe_v4.00.xsd` para validação e leitura estruturada do XML
+- **Flask** — leve, adequado para APIs REST + servir o frontend e templates Jinja2
+- **Werkzeug bcrypt** — hash de senhas seguro, já incluído no Flask
+- **Decimal** — todos os cálculos financeiros usam `Decimal` para evitar erros de ponto flutuante
+- **datetime.now()** — horário local do servidor (sem UTC) para exibição correta das datas
+- **SPA + templates** — dashboard como SPA vanilla JS; telas de auth como templates Jinja2 tradicionais
 
 ---
 
@@ -136,12 +166,27 @@ pip install -r requirements.txt
 ```bash
 # Iniciar o pipeline completo (Agente 1 → 2 → 3)
 python main.py
+```
 
-# Processar um arquivo XML específico
-python main.py --arquivo caminho/para/nota.xml
+Acesse: **http://127.0.0.1:5000**
 
-# Abrir o Dashboard
-python dashboard.py
+### Primeiro acesso
+
+| Campo | Valor |
+|-------|-------|
+| Usuário | `admin@autonfe.local` |
+| Senha | `sa` |
+
+O sistema solicitará a troca de senha no primeiro login.
+
+### Testes
+
+```bash
+# Todos os testes
+pytest tests/ -v
+
+# Com relatório de cobertura
+pytest tests/ -v --cov=agents --cov=database --cov-report=term-missing
 ```
 
 ### Banco de Dados
