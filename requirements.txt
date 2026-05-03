@@ -1,5 +1,5 @@
 flask==3.0.3
-lxml==5.2.2
-sqlalchemy==2.0.30
+lxml>=6.1.0
+sqlalchemy>=2.0.36
 pytest==8.2.2
 pytest-cov==5.0.0
