@@ -220,3 +220,6 @@ __marimo__/
 # configs iniciais de padrão de commit
 node_modules/
 dist/
+
+# Banco de dados local (gerado automaticamente na primeira execução)
+autonfe.db
