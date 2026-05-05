@@ -44,3 +44,5 @@
 > Adicione uma seção de como utilizar o app.
 > ex: faça o clone, rode o comando x.
 
+### Geral - criação de commits / PR´s
+> adicione as alterações feitas, faça o commit baseado no padrão do projeto e abra um novo pr no repositório
