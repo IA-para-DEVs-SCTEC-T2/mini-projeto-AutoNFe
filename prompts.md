@@ -44,5 +44,8 @@
 > Adicione uma seção de como utilizar o app.
 > ex: faça o clone, rode o comando x.
 
+### 4. Configuração de gitActions
+> Dentro da pasta .github/workflows crie um arquivo commitlint.yml com a configuração necessária para utilizarmos o gitHub Actions para análise de commits semânticos no PR
+
 ### Geral - criação de commits / PR´s
 > adicione as alterações feitas, faça o commit baseado no padrão do projeto e abra um novo pr no repositório
