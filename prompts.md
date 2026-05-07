@@ -49,6 +49,9 @@
 >     - Troca de senha com validação da senha temporária
 >     - Cadastro de usuários (somente administrador): Nome, E-mail, Senha, Tipo (Padrão/Administrador)
 >     - Usuário administrador inicial: `admin@autonfe.local` ou `Administrador` / senha `sa`
+>
+> 7 Segurança
+>     - Crie o projeto utilizando regras de segurança conforme `OWASP Pop 10` para evitar vulnerabilidades na aplicação
 
 ### 3. Seção "Como Usar"
 > Adicione uma seção de como utilizar o app.
