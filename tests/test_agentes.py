@@ -11,17 +11,17 @@ from decimal import Decimal
 # Garante que o pacote raiz está no path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from agents.agent1_leitura import AgenteLeitorNFe
-from agents.agent2_cadastro import AgenteCadastro
-from agents.agent3_validacao import AgenteValidacaoValores
-from agents.orquestrador import Orquestrador
-from database.models import criar_tabelas, SessionLocal, NotaFiscal, Emitente, Destinatario
+from src.agents.agent1_leitura import AgenteLeitorNFe
+from src.agents.agent2_cadastro import AgenteCadastro
+from src.agents.agent3_validacao import AgenteValidacaoValores
+from src.agents.orquestrador import Orquestrador
+from src.database.models import criar_tabelas, SessionLocal, NotaFiscal, Emitente, Destinatario
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
 
-XML_PATH = os.path.join(os.path.dirname(__file__), "nfe_exemplo.xml")
+XML_PATH = os.path.join(os.path.dirname(__file__), "fixtures", "nfe_exemplo.xml")
 
 
 @pytest.fixture(scope="session")
@@ -39,7 +39,7 @@ def resultado_leitura(xml_bytes):
 @pytest.fixture
 def db_session(tmp_path, monkeypatch):
     """Sessão de banco de dados em arquivo temporário."""
-    import database.models as m
+    import src.database.models as m
     db_file = str(tmp_path / "test.db")
     test_url = f"sqlite:///{db_file}"
     from sqlalchemy import create_engine, event
@@ -179,7 +179,7 @@ class TestAgente3Validacao:
 
     def test_divergencia_detectada(self):
         """Cria uma NF-e com valor ICMS errado e verifica detecção."""
-        from agents.agent1_leitura import ResultadoLeitura, Produto, TributacaoItem, Totais
+        from src.agents.agent1_leitura import ResultadoLeitura, Produto, TributacaoItem, Totais
         res = ResultadoLeitura()
         t = TributacaoItem(
             icms_cst="00", icms_vbc=Decimal("1000"), icms_paliq=Decimal("12"),
@@ -243,9 +243,9 @@ class TestOrquestrador:
 @pytest.fixture
 def flask_client(tmp_path, monkeypatch):
     """Cliente de teste Flask com banco isolado e token de autenticação."""
-    import database.models as m
-    import database.repository as repo
-    import security
+    import src.database.models as m
+    import src.database.repository as repo
+    import src.web.security as security
     from sqlalchemy import create_engine, event
     from sqlalchemy.orm import sessionmaker
     from contextlib import contextmanager
@@ -276,7 +276,7 @@ def flask_client(tmp_path, monkeypatch):
     TEST_TOKEN = "test-token-seguro-123"
     monkeypatch.setattr(security, "_API_TOKEN", TEST_TOKEN)
 
-    import main as flask_app
+    import src.web.main as flask_app
     flask_app.app.config["TESTING"] = True
 
     # Helper que injeta o token automaticamente em todas as requisições
@@ -394,14 +394,14 @@ class TestSeguranca:
     # A01 / A07 — Autenticação obrigatória
     def test_sem_token_retorna_401(self, flask_client):
         """Requisição sem token deve ser rejeitada com 401."""
-        import main as flask_app
+        import src.web.main as flask_app
         with flask_app.app.test_client() as client_sem_token:
             res = client_sem_token.get("/api/dashboard")
             assert res.status_code == 401
 
     def test_token_invalido_retorna_401(self, flask_client):
         """Token incorreto deve ser rejeitado com 401."""
-        import main as flask_app
+        import src.web.main as flask_app
         with flask_app.app.test_client() as client_sem_token:
             res = client_sem_token.get(
                 "/api/dashboard",
@@ -416,7 +416,7 @@ class TestSeguranca:
 
     def test_pagina_principal_publica(self, flask_client):
         """A página de login deve ser acessível sem token."""
-        import main as flask_app
+        import src.web.main as flask_app
         with flask_app.app.test_client() as client_sem_token:
             res = client_sem_token.get("/login")
             assert res.status_code == 200
@@ -454,7 +454,7 @@ class TestSeguranca:
     # A08 — Sanitização de nome de arquivo
     def test_nome_arquivo_xss_sanitizado(self):
         """Nome de arquivo com tags HTML deve ter os caracteres especiais removidos."""
-        from security import sanitizar_nome_arquivo
+        from src.web.security import sanitizar_nome_arquivo
         nome_malicioso = '<script>alert("xss")</script>.xml'
         resultado = sanitizar_nome_arquivo(nome_malicioso)
         assert "<" not in resultado
@@ -463,7 +463,7 @@ class TestSeguranca:
 
     def test_nome_arquivo_path_traversal_sanitizado(self):
         """Tentativa de path traversal no nome do arquivo deve ser bloqueada."""
-        from security import sanitizar_nome_arquivo
+        from src.web.security import sanitizar_nome_arquivo
         nome_malicioso = "../../etc/passwd"
         resultado = sanitizar_nome_arquivo(nome_malicioso)
         assert "/" not in resultado
@@ -473,7 +473,7 @@ class TestSeguranca:
     def test_limite_arquivos_lote_respeitado(self, flask_client):
         """Lote com mais arquivos que o limite deve processar apenas até o máximo."""
         from io import BytesIO
-        from security import MAX_ARQUIVOS_LOTE
+        from src.web.security import MAX_ARQUIVOS_LOTE
         with open(XML_PATH, "rb") as f:
             conteudo = f.read()
 

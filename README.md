@@ -164,7 +164,7 @@ pip install -r requirements.txt
 ### Executando os Agentes
 
 ```bash
-# Iniciar o pipeline completo (Agente 1 → 2 → 3)
+# Iniciar o servidor Flask
 python main.py
 ```
 
@@ -191,7 +191,11 @@ pytest tests/ -v --cov=agents --cov=database --cov-report=term-missing
 
 ### Banco de Dados
 
-Na primeira execução, o banco de dados local (`autonfe.db`) é criado automaticamente no diretório raiz do projeto.
+Na primeira execução, o banco de dados local (`autonfe.db`) é criado automaticamente no diretório `data/database/`.
+
+### Estrutura do Projeto
+
+Para entender a organização de pastas e arquivos, consulte a [documentação da estrutura](docs/structure.md).
 
 ---
 
