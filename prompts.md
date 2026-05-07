@@ -39,6 +39,16 @@
 >
 > 5 Autorização Cadastro
 >     - Ao clicar na quantidade emitente, destinatário ou tributação, exibir tela com relação, usuário deve marcar o cadastro que deseja autorizar e confirmar.
+>
+> 6 Login
+>     - Tela de login com autenticação por e-mail ou nome de usuário
+>     - Senhas criptografadas com bcrypt (Werkzeug)
+>     - Requisitos de senha: mínimo 8 caracteres, maiúscula, minúscula, número e caractere especial
+>     - Primeiro login força troca de senha
+>     - Recuperação de senha via senha temporária (simulada no log; configure SMTP para envio real)
+>     - Troca de senha com validação da senha temporária
+>     - Cadastro de usuários (somente administrador): Nome, E-mail, Senha, Tipo (Padrão/Administrador)
+>     - Usuário administrador inicial: `admin@autonfe.local` ou `Administrador` / senha `sa`
 
 ### 3. Seção "Como Usar"
 > Adicione uma seção de como utilizar o app.
