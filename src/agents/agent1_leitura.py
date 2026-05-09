@@ -21,7 +21,7 @@ NFE_NAMESPACE = "http://www.portalfiscal.inf.br/nfe"
 NS = {"nfe": NFE_NAMESPACE}
 
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-XSD_PATH = os.path.join(_BASE_DIR, "Apoio", "leiauteNFe_v4.00.xsd")
+XSD_PATH = os.path.join(_BASE_DIR, "data", "schemas", "leiauteNFe_v4.00.xsd")
 
 _CEM = Decimal("100")
 

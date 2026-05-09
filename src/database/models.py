@@ -23,7 +23,7 @@ def _agora():
 import os
 
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(_BASE_DIR, "autonfe.db")
+DB_PATH = os.path.join(_BASE_DIR, "data", "database", "autonfe.db")
 DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(DATABASE_URL, echo=False, connect_args={"check_same_thread": False})

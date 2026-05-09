@@ -17,7 +17,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # Carrega variáveis do .env se existir (sem dependência externa)
 # ---------------------------------------------------------------------------
 
-_env_path = Path(__file__).parent / ".env"
+_env_path = Path(__file__).parent.parent.parent / ".env"
 if _env_path.exists():
     for _linha in _env_path.read_text(encoding="utf-8").splitlines():
         _linha = _linha.strip()
@@ -80,7 +80,7 @@ from src.web.security import (
 
 configurar_logging()
 
-_ROOT = Path(__file__).parent.parent.parent  # raiz do projeto
+_ROOT = Path(__file__).parent.parent  # diretório src/
 
 app = Flask(
     __name__,
