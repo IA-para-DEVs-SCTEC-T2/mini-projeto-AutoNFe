@@ -26,6 +26,15 @@ _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(_BASE_DIR, "data", "database", "autonfe.db")
 DATABASE_URL = f"sqlite:///{DB_PATH}"
 
+# Garante que o diretório para o arquivo de banco exista antes de abrir/conectar
+_DB_DIR = os.path.dirname(DB_PATH)
+if not os.path.exists(_DB_DIR):
+    try:
+        os.makedirs(_DB_DIR, exist_ok=True)
+    except OSError:
+        # Falha ao criar o diretório — deixamos o erro pro SQLAlchemy para diagnóstico
+        pass
+
 engine = create_engine(DATABASE_URL, echo=False, connect_args={"check_same_thread": False})
 
 # Habilita foreign keys no SQLite
