@@ -9,7 +9,13 @@
 
 ## Documentação do Projeto
 
-### 2. Redação do README
+### 2. Diagramas UML e C4 no PRD
+> @renderMermaidDiagram utilizando contexto dos arquivos .Kiro\steering atualize o arquivo docs\PRD.md com 1 diagrama uml e 1 diagrama c4 (container).
+> Atualize também na pasta docs\prompts.md o prompt que utilizarmos para essa construção
+
+---
+
+### 4. Redação do README
 > Redija o README para as informações sobre o seguinte projeto.
 >
 > Criação de multiplos agentes para implantação de sistema com base em NF-e (XML) já emitados ou recebidos de fornecedores;
