@@ -153,7 +153,11 @@ def login():
         usuario, motivo = autenticar_usuario(login_val, senha)
         if not usuario:
             erro = motivo
+            import logging as _log
+            _log.getLogger("nfe.auditoria").warning("Login falhou — login=%s ip=%s motivo=%s", login_val, request.remote_addr, motivo)
         else:
+            import logging as _log
+            _log.getLogger("nfe.auditoria").info("Login bem-sucedido — usuario_id=%s login=%s ip=%s", usuario.id, login_val, request.remote_addr)
             usando_temp = bool(
                 usuario.senha_temp
                 and check_password_hash(usuario.senha_temp, senha)

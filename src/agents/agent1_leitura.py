@@ -399,7 +399,9 @@ def _carregar_schema() -> Optional[etree.XMLSchema]:
     if not os.path.exists(XSD_PATH):
         return None
     try:
-        return etree.XMLSchema(etree.parse(XSD_PATH))
+        # Use a safe parser when loading the XSD to avoid any entity/network resolution
+        safe_parser = etree.XMLParser(resolve_entities=False, no_network=True)
+        return etree.XMLSchema(etree.parse(XSD_PATH, parser=safe_parser))
     except Exception:
         return None
 
