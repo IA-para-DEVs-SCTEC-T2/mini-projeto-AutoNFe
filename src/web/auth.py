@@ -91,6 +91,7 @@ def login_requerido(f):
     @wraps(f)
     def _verificar(*args, **kwargs):
         if "usuario_id" not in session:
+            logger.warning("Acesso sem login — rota=%s método=%s ip=%s", request.path, request.method, request.remote_addr)
             return redirect(url_for("login"))
         return f(*args, **kwargs)
     return _verificar
@@ -102,6 +103,7 @@ def admin_requerido(f):
         if "usuario_id" not in session:
             return redirect(url_for("login"))
         if session.get("usuario_tipo") != "administrador":
+            logger.warning("Acesso negado (admin) — usuario_id=%s rota=%s método=%s ip=%s", session.get("usuario_id"), request.path, request.method, request.remote_addr)
             return jsonify({"erro": "Acesso restrito a administradores."}), 403
         return f(*args, **kwargs)
     return _verificar
