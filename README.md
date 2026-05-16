@@ -103,7 +103,8 @@ Fluxo de aprovação dos registros criados automaticamente pelo **Agente 2**:
 - Recuperação de senha via senha temporária (simulada no log; configure SMTP para envio real)
 - Troca de senha com validação da senha temporária
 - Cadastro de usuários (somente administrador): Nome, E-mail, Senha, Tipo (Padrão/Administrador)
-- Usuário administrador inicial: `admin@autonfe.local` / senha `sa`
+- Usuário administrador inicial: `admin@autonfe.local` / senha `sa` — troca de senha obrigatória no primeiro login
+- Usuário de teste E2E: `test-autonfe` / senha `AutoNfe123#` — criado automaticamente na inicialização, sem troca de senha obrigatória
 - Controle de acesso por sessão Flask + token de API
 
 ---
@@ -172,12 +173,12 @@ Acesse: **http://127.0.0.1:5000**
 
 ### Primeiro acesso
 
-| Campo | Valor |
-|-------|-------|
-| Usuário | `admin@autonfe.local` |
-| Senha | `sa` |
+| Perfil | Usuário | Senha | Observação |
+|--------|---------|-------|------------|
+| Administrador | `admin@autonfe.local` | `sa` | Troca de senha obrigatória no primeiro login |
+| Testes E2E | `test-autonfe` | `AutoNfe123#` | Criado automaticamente — sem troca de senha obrigatória |
 
-O sistema solicitará a troca de senha no primeiro login.
+> Ambos os usuários são criados automaticamente na primeira execução da aplicação.
 
 ### Testes
 
