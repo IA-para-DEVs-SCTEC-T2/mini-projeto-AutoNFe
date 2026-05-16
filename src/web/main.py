@@ -32,6 +32,7 @@ from src.web.auth import (
     gerar_senha_temporaria,
     login_requerido,
     seed_admin,
+    seed_usuario_teste,
     validar_senha_forte,
 )
 from src.database.models import Usuario, criar_tabelas
@@ -98,7 +99,8 @@ app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 registrar_headers_seguranca(app)
 
 criar_tabelas()
-seed_admin()  # garante usuário admin inicial
+seed_admin()          # garante usuário admin inicial
+seed_usuario_teste()  # garante usuário padrão para testes E2E
 
 _PERIODOS = {
     "dia": lambda hoje: hoje.replace(hour=0, minute=0, second=0, microsecond=0),

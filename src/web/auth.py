@@ -83,6 +83,27 @@ def seed_admin():
         db.close()
 
 
+def seed_usuario_teste():
+    """Cria o usuário padrão para testes E2E (login: test-autonfe / senha: AutoNfe123#)."""
+    db = SessionLocal()
+    try:
+        existe = db.query(Usuario).filter_by(nome="test-autonfe").first()
+        if not existe:
+            usuario_teste = Usuario(
+                nome="test-autonfe",
+                email="test-autonfe@autonfe.local",
+                senha_hash=generate_password_hash("AutoNfe123#"),
+                tipo="padrao",
+                ativo=True,
+                trocar_senha=False,  # não força troca — usuário dedicado a testes
+            )
+            db.add(usuario_teste)
+            db.commit()
+            logger.info("Usuário de teste criado (login: test-autonfe / senha: AutoNfe123#)")
+    finally:
+        db.close()
+
+
 # ---------------------------------------------------------------------------
 # Decorator: exige login
 # ---------------------------------------------------------------------------

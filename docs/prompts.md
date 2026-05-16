@@ -54,7 +54,8 @@
 >     - Recuperação de senha via senha temporária (simulada no log; configure SMTP para envio real)
 >     - Troca de senha com validação da senha temporária
 >     - Cadastro de usuários (somente administrador): Nome, E-mail, Senha, Tipo (Padrão/Administrador)
->     - Usuário administrador inicial: `admin@autonfe.local` ou `Administrador` / senha `sa`
+>     - Usuário administrador inicial: `admin@autonfe.local` ou `Administrador` / senha `sa` — troca de senha obrigatória no primeiro login
+>     - Usuário de teste E2E: `test-autonfe` / senha `AutoNfe123#` — criado automaticamente, sem troca de senha obrigatória
 >
 > 7 Segurança
 >     - Crie o projeto utilizando regras de segurança conforme `OWASP Pop 10` para evitar vulnerabilidades na aplicação
@@ -68,3 +69,40 @@
 
 ### Geral - criação de commits / PR´s
 > adicione as alterações feitas, faça o commit baseado no padrão do projeto e abra um novo pr no repositório
+
+---
+
+## Testes E2E
+
+### Testes automatizados com Playwright
+> Utilizando Playwright, quero incluir um fluxo de teste E2E no sistema para validação do login. Em seguida, após a validação do login, quero que realize a importação de pelo menos uma nota no sistema, para validar a funcionalidade de importação de XML da NF-e.
+>
+> Contexto: A aplicação possui uma tela de login com os campos usuário ou e-mail, senha e botão para entrar. Após o login válido, o usuário deve ser direcionado para a tela de importação de XML.
+>
+> Cenário: O usuário acessa a tela de login, informa email e senha válidos, clica no botão Entrar e deve acessar a tela de importação de XML.
+>
+> Requisitos: Use pytest com Playwright em Python. Crie um nome claro para o teste. Use expect() do Playwright para validar URL e elementos da página. Gere comentários necessários dentro do teste.
+>
+> Gere o teste automatizado dentro da pasta src\tests\test-e2e
+
+### Usuário de teste E2E
+> Crie um usuário padrão para os testes E2E. Crie esse usuário já na inicialização da aplicação, junto com o banco.
+>
+> Usuário: test-autonfe
+> Senha: AutoNfe123#
+>
+> E utilize esse usuário e senha como dados de entrada para realizar os testes que acabou de criar.
+
+**Usuários criados automaticamente na inicialização da aplicação:**
+
+| Perfil | Usuário / Login | Senha | Tipo | Troca de senha |
+|--------|----------------|-------|------|----------------|
+| Administrador | `admin@autonfe.local` | `sa` | administrador | Sim — obrigatória no primeiro login |
+| Testes E2E | `test-autonfe` | `AutoNfe123#` | padrão | Não |
+
+Ambos são gerados pelas funções `seed_admin()` e `seed_usuario_teste()` em `src/web/auth.py`, chamadas em `src/web/main.py` durante a inicialização.
+
+**Comando para executar os testes E2E visualizando no navegador:**
+```bash
+pytest src/tests/test-e2e/test_login_e_importacao_nfe.py -v --headed --slowmo 800
+```
